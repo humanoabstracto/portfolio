@@ -1,0 +1,197 @@
+  <!-- 
+  
+    Iconos Desktop 🖥️   ----------------
+    Tamaño visual: 64px – 80px
+    Archivo fuente: 256px o 512px 
+
+    Iconos: portada de canciones, branding
+
+    Iconos Dock 🍎 --------------------
+    Tamaño visual: 50px
+    Archivo fuente: 256px o 512px 
+
+    Iconos: spotify, apple music, instagram, error,
+   youtube, fotos
+  
+  -->
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Desktop Web</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="desktop">
+
+  <!-- 🖥️ Ícono 1 -->
+  <div class="icon icon1">
+    <a href="proyecto1.html" target="_blank">
+      <img src="Imagenes/icon1.png" alt="">
+      <p>CV_Renato_Figueroa</p>
+    </a>
+  </div>
+
+  <!-- 🖥️ Ícono 2 -->
+  <div class="icon icon2">
+    <a href="proyecto2.html" target="_blank">
+      <img src="Imagenes/icon2.png" alt="">
+      <p>Error404</p>
+    </a>
+  </div>
+
+  <!-- 🖥️ Ícono 3 -->s
+  <div class="icon icon3">
+    <a href="proyecto3.html" target="_blank">
+      <img src="Imagenes/icon1.png" alt="">
+      <p>Proyecto 3</p>
+    </a>
+  </div>
+
+  <!-- 🖥️ Ícono 4 -->
+  <div class="icon icon3">
+    <a href="proyecto3.html" target="_blank">
+      <img src="Imagenes/icon2.png" alt="">
+      <p>Proyecto 4</p>
+    </a>
+  </div>
+
+  <!-- 🖥️ Ícono 5 -->
+  <div class="icon icon3">
+    <a href="proyecto3.html" target="_blank">
+      <img src="Imagenes/icon1.png" alt="">
+      <p>Proyecto 5</p>
+    </a>
+  </div>
+
+  <!-- 🖥️ Ícono 6 -->
+  <div class="icon icon3">
+    <a href="proyecto3.html" target="_blank">
+      <img src="Imagenes/icon2.png" alt="">
+      <p>Proyecto 6</p>
+    </a>
+  </div>
+
+</div>
+
+<!-- 🍎 DOCK CON ICONOS DE REDES SOCIALES Y PROGRAMAS-->
+
+<div class="dock">
+
+  <div class="dock-item">
+    <img src="Imagenes/finder.png" alt="">
+    <span class="tooltip">Finder</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/mail.png" alt="">
+    <span class="tooltip">Mail</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/notas.png" alt="">
+    <span class="tooltip">Notas</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/Fotos.png" alt="">
+    <span class="tooltip">Fotos</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/music.png" alt="">
+    <span class="tooltip">Music</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/spotify.png" alt="">
+    <span class="tooltip">Spotify</span>
+  </div>
+  
+
+  <div class="dock-item">
+    <img src="Imagenes/instagram.png" alt="">
+    <span class="tooltip">Instagram</span>
+  </div>
+
+  <div class="dock-item">
+    <img src="Imagenes/warning.png" alt="">
+    <span class="tooltip">Warning</span>
+  </div>
+
+  <!-- separador -->
+  <div class="dock-separator"></div>
+
+  <div class="dock-item">
+    <img src="Imagenes/Trash.png" alt="">
+    <span class="tooltip">Trash</span>
+  </div>
+
+</div>
+
+
+
+
+
+
+<div id="window" class="window hidden">
+  <div class="window-header">
+    <span class="close-btn"></span>
+    <span class="min-btn"></span>
+    <span class="max-btn"></span>
+  </div>
+
+  <div class="window-content">
+    <iframe id="window-frame" src=""></iframe>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- ⚠️ VENTANA DE ALERTA -->
+
+<div id="alert" class="alert hidden">
+  <div class="alert-box">
+    <p id="alert-message">Mensaje de prueba</p>
+    <button id="alert-ok">OK</button>
+  </div>
+</div>
+
+<div class="dock-item">
+  <img src="Imagenes/warning.png" id="warning-icon">
+  <span class="tooltip">Warning</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+<script src="script.js" defer></script>
+
+</html>
