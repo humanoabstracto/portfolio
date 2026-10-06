@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  Escritorio Web · Renato Figueroa
+  ─────────────────────────────────
+  Para cambiar textos, enlaces, imágenes o el PDF → edita js/config.js
+  Este archivo solo tiene la estructura; el contenido se genera desde la configuración.
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Renato Figueroa · Desktop</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 🔝 Barra de menú -->
+  <header class="menubar" aria-label="Barra de menú">
+    <span class="brand" id="brand"></span>
+    <span class="app-name" id="active-app">Finder</span>
+    <span id="menus"></span>
+    <span class="spacer"></span>
+    <time class="clock" id="clock"><span class="date"></span><span class="time"></span></time>
+  </header>
+
+  <!-- 🖥️ Escritorio: los íconos se generan desde config.js -->
+  <main class="desktop" id="desktop" aria-label="Escritorio">
+    <div class="sticky-note" id="sticky">
+      <div class="sticky-header" id="sticky-title"></div>
+      <div class="sticky-content" id="sticky-text"></div>
+    </div>
+  </main>
+
+  <!-- 🍎 Dock: se genera desde config.js -->
+  <nav class="dock" id="dock" aria-label="Dock"></nav>
+
+  <!-- 🔔 Notificación -->
+  <div class="notif" id="notif" role="status" aria-live="polite">
+    <img id="notif-icon" alt="">
+    <div><strong id="notif-title"></strong><span id="notif-body"></span></div>
+  </div>
+
+  <!-- ⚠️ Alerta -->
+  <div class="alert" id="alert" hidden role="alertdialog" aria-modal="true" aria-labelledby="alert-message">
+    <div class="alert-box">
+      <img id="alert-icon" alt="">
+      <p id="alert-message"></p>
+      <button id="alert-ok">OK</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

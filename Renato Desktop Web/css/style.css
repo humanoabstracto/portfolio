@@ -1,0 +1,306 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Escritorio Web · Estilos
+   Colores y medidas generales → variables en :root (primera sección)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Variables ──────────────────────────────────────────────── */
+:root{
+  --menu-h:28px;                        /* alto de la barra de menú */
+  --dock-size:50px;                     /* tamaño de íconos del dock */
+  --glass:rgba(255,255,255,.18);        /* vidrio del dock */
+  --glass-border:rgba(255,255,255,.35);
+  --menu-bg:rgba(20,40,70,.28);         /* vidrio de la barra de menú */
+  --win-bg:#1e1e1e; --win-head:#2a2a2a; --win-text:#eaeaea;
+  --accent:#0a84ff;                     /* azul de selección macOS */
+  --select-blue:rgba(0,120,255,.92);
+  --sticky:#efe49a;                     /* color de la nota */
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+/* ── 2. Base ───────────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%}
+@supports (height:100dvh){html,body{height:100dvh}}
+body{overflow:hidden;font-family:var(--font);background:#1a1a1a;-webkit-font-smoothing:antialiased}
+img{max-width:100%;-webkit-user-drag:none}
+button{font:inherit}
+.mobile-only{display:none!important}
+
+/* ── 3. Barra de menú ──────────────────────────────────────────── */
+.menubar{
+  position:fixed;top:0;left:0;right:0;z-index:2500;
+  height:calc(var(--menu-h) + env(safe-area-inset-top,0px));
+  padding:env(safe-area-inset-top,0px) 14px 0;
+  display:flex;align-items:center;gap:18px;font-size:13px;color:#fff;
+  background:var(--menu-bg);
+  backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);
+  box-shadow:0 1px 0 rgba(255,255,255,.12);user-select:none;
+}
+.menubar .brand{font-weight:700}
+.menubar .app-name{font-weight:600}
+#menus{display:flex;gap:18px}
+.menubar .menu{opacity:.85}
+.menubar .spacer{flex:1}
+.menubar .clock{font-variant-numeric:tabular-nums;white-space:nowrap}
+.menubar .clock .date{margin-right:8px}
+
+/* ── 4. Escritorio ─────────────────────────────────────────────── */
+.desktop{
+  position:relative;width:100%;height:100%;overflow:hidden;padding-top:var(--menu-h);
+  background:#3d7fc4 center/cover no-repeat;   /* la imagen viene de config.js */
+  touch-action:none;
+}
+
+/* ── 5. Íconos del escritorio ──────────────────────────────────── */
+.icon{
+  position:absolute;width:88px;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:#fff;font-size:12px;text-align:center;
+  background:none;border:0;padding:6px 4px;border-radius:6px;
+  cursor:default;user-select:none;-webkit-user-select:none;touch-action:none;
+}
+.icon img{width:64px;height:64px;object-fit:contain;display:block;pointer-events:none;border-radius:6px;padding:2px;transition:transform .15s ease}
+.icon:hover img{transform:scale(1.05)}
+.icon span{
+  padding:1px 6px;border-radius:4px;line-height:1.35;max-width:100%;
+  text-shadow:0 1px 2px rgba(0,0,0,.85),0 0 6px rgba(0,0,0,.45);word-break:break-all;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+}
+.icon.selected img{background:rgba(0,0,0,.25);outline:1px solid rgba(220,220,220,.45)}
+.icon.selected span{-webkit-line-clamp:unset;background:var(--select-blue);text-shadow:none}
+.icon.dragging{z-index:50;opacity:.85}
+.icon:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* miniaturas automáticas */
+.icon img.thumb-doc{padding:4px 8px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)) drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+.icon img.thumb-photo{padding:0;width:60px;height:60px;margin:2px;object-fit:cover;border:2px solid #fff;border-radius:2px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.icon.selected img.thumb-photo{outline-offset:3px}
+
+/* ── 6. Nota adhesiva ──────────────────────────────────────────── */
+.sticky-note{
+  position:absolute;width:240px;min-height:240px;padding:18px;
+  background:var(--sticky);color:#222;border-radius:2px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.4);
+  z-index:200;cursor:grab;user-select:none;touch-action:none;
+  transition:opacity .2s ease,transform .2s ease;
+}
+.sticky-note.dragging{cursor:grabbing}
+.sticky-note.is-hidden{opacity:0;transform:scale(.9);pointer-events:none}
+.sticky-header{font-weight:700;margin-bottom:16px;font-size:14px;letter-spacing:.3px}
+.sticky-content{font-size:13px;line-height:1.5}
+.sticky-content p + p{margin-top:8px}
+
+/* ── 7. Dock ───────────────────────────────────────────────────── */
+.dock{
+  position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
+  display:flex;align-items:flex-end;gap:10px;padding:8px 12px;border-radius:20px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:1000;
+}
+.dock-item{position:relative;display:flex;flex-direction:column;align-items:center;
+  background:none;border:0;padding:0;cursor:pointer;color:inherit;text-decoration:none}
+.dock-item img{width:var(--dock-size);height:var(--dock-size);object-fit:contain;display:block;
+  transform-origin:50% 100%;transition:transform .12s ease-out;will-change:transform}
+.dock-item::after{content:"";width:4px;height:4px;border-radius:50%;background:rgba(0,0,0,.6);margin-top:3px;opacity:0;transition:opacity .2s}
+.dock-item.running::after{opacity:1}
+.dock-item.bounce img{animation:bounce .6s ease}
+@keyframes bounce{0%,100%{translate:0 0}40%{translate:0 -14px}70%{translate:0 -4px}}
+.dock-item:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:12px}
+.tooltip{
+  position:absolute;bottom:calc(100% + 14px);left:50%;translate:-50% 6px;
+  background:rgba(40,40,40,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:#fff;padding:5px 11px;border-radius:6px;font-size:12px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .15s ease,translate .15s ease;
+}
+.tooltip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:rgba(40,40,40,.55)}
+.dock-item:hover .tooltip,.dock-item:focus-visible .tooltip{opacity:1;translate:-50% 0}
+.dock-separator{width:1px;align-self:stretch;margin:4px 2px 10px;background:rgba(255,255,255,.4)}
+
+/* ── 8. Ventanas (base) ────────────────────────────────────────── */
+.window{
+  position:fixed;top:12%;left:15%;width:min(70vw,960px);height:min(70vh,720px);min-width:280px;min-height:200px;
+  display:flex;flex-direction:column;overflow:hidden;border-radius:12px;
+  background:var(--win-bg);color:var(--win-text);
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);
+  animation:winIn .18s ease-out;
+}
+@keyframes winIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.window.is-min{display:none}
+.window.is-max{translate:none;top:var(--menu-h)!important;left:0!important;width:100%!important;height:calc(100% - var(--menu-h) - 92px)!important;border-radius:0}
+.window.centered{left:50%;translate:-50% 0}
+.window-header{height:36px;flex:0 0 36px;display:flex;align-items:center;gap:8px;padding:0 12px;
+  background:var(--win-head);cursor:grab;user-select:none;touch-action:none;position:relative}
+.window-title{position:absolute;left:0;right:0;text-align:center;font-size:13px;color:#bdbdbd;pointer-events:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 80px}
+.win-btn{width:12px;height:12px;border-radius:50%;border:0;cursor:pointer;position:relative;z-index:1;padding:0}
+.win-btn.close{background:#ff5f56}.win-btn.min{background:#ffbd2e}.win-btn.max{background:#27c93f}
+.window-header:hover .win-btn::after{position:absolute;inset:0;font-size:9px;line-height:12px;color:rgba(0,0,0,.6);font-weight:700}
+.window-header:hover .win-btn.close::after{content:"×"}
+.window-header:hover .win-btn.min::after{content:"–"}
+.window-header:hover .win-btn.max::after{content:"+"}
+.window-content{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;position:relative}
+
+/* contenido vacío y Finder */
+.empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;color:#bdbdbd;font-size:14px}
+.empty img{width:72px;opacity:.9}
+.finder-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px;padding:18px}
+.finder-grid button{background:none;border:0;color:#eaeaea;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;padding:8px;border-radius:8px;cursor:pointer;word-break:break-all}
+.finder-grid button:hover,.finder-grid button:focus-visible{background:rgba(255,255,255,.08);outline:none}
+.finder-grid img{width:56px;height:56px;object-fit:contain}
+.finder-grid img.thumb-photo{object-fit:cover;border:2px solid #fff;border-radius:2px}
+
+/* ── 9. Vista previa (PDF e imágenes) ──────────────────────────── */
+.window.preview{top:calc(var(--menu-h) + 24px);width:min(84vw,1120px);height:calc(100% - var(--menu-h) - 140px);min-width:420px}
+.window.preview .window-header{height:52px;flex-basis:52px;padding:0 10px 0 14px;background:linear-gradient(#323232,#2a2a2a);border-bottom:1px solid #111}
+.pv-tb{display:flex;align-items:center;gap:6px;flex:1;min-width:0;margin-left:10px}
+.pv-title{display:flex;flex-direction:column;min-width:0;margin:0 8px 0 4px;line-height:1.2}
+.pv-title strong{font-size:13px;font-weight:600;color:#ececec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv-title small{font-size:11px;color:#9a9a9a;font-variant-numeric:tabular-nums}
+.pv-spacer{flex:1}
+.tb-btn{height:28px;min-width:30px;padding:0 6px;border:0;border-radius:6px;background:transparent;color:#cfcfcf;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-variant-numeric:tabular-nums}
+.tb-btn:hover{background:rgba(255,255,255,.09);color:#fff}
+.tb-btn.on{background:rgba(255,255,255,.14);color:#fff}
+.tb-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tb-btn svg{display:block}
+.tb-group{display:inline-flex;align-items:center;background:rgba(255,255,255,.05);border-radius:7px}
+.tb-zoom{min-width:48px;color:#bdbdbd}
+.pv{display:flex;height:100%;background:#262626;position:relative}
+.pv-side{flex:0 0 150px;overflow-y:auto;padding:14px 0;background:#1f1f1f;border-right:1px solid #111;
+  display:flex;flex-direction:column;align-items:center;gap:14px;transition:margin-left .2s ease}
+.pv.noside .pv-side{margin-left:-151px}
+.pv-thumb{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;color:#9a9a9a;font-size:11px;padding:0}
+.pv-thumb img{width:92px;display:block;border:3px solid transparent;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.4);background:#fff}
+.pv-thumb.active img{border-color:var(--accent)}
+.pv-thumb.active span{background:var(--accent);color:#fff;border-radius:8px;padding:0 7px}
+.pv-main{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.pv-pages{margin:0 auto;padding:22px 0 40px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.pv.single .pv-pages{min-height:100%;justify-content:center;padding:22px 0}
+.pv-pages img{width:100%;height:auto;display:block;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.45)}
+
+/* descripción: tamaño fijo, independiente del zoom, siempre centrada en la ventana */
+.pv-desc{position:sticky;left:0;padding:0 24px 32px}
+.pv-desc p{max-width:680px;margin:0 auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.14);
+  font-size:13px;line-height:1.55;color:#cfcfcf}
+
+/* ventana Error 404 (proyectos sin contenido) */
+.window.notice{width:min(360px,calc(100vw - 32px));height:auto;min-height:0;min-width:0;top:26%}
+.nf{padding:26px 24px 20px;text-align:center}
+.nf img{width:56px;height:56px;display:block;margin:0 auto 12px}
+.nf h2{font-size:22px;font-weight:700;letter-spacing:-.2px;color:#fff;margin-bottom:6px}
+.nf p{font-size:13px;color:#bdbdbd;margin-bottom:20px}
+.nf-ok{width:100%;padding:7px 16px;border-radius:8px;border:0;background:#007aff;color:#fff;font-size:13px;cursor:pointer}
+.nf-ok:hover{background:#339cff}
+.nf-ok:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* ── 10. Visor tipo Fotos (galerías) ───────────────────────────── */
+.viewer{height:100%;display:flex;flex-direction:column;background:#161616}
+.viewer-stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px;overflow:hidden;touch-action:pan-y}
+.viewer-stage img{max-width:100%;max-height:100%;object-fit:contain;display:block;box-shadow:0 8px 30px rgba(0,0,0,.45);transition:opacity .18s ease;cursor:zoom-in}
+.viewer-stage.zoomed{overflow:auto;display:block;cursor:zoom-out}
+.viewer-stage.zoomed img{max-width:none;max-height:none;width:180%;margin:0 auto;cursor:zoom-out}
+.viewer-nav{position:absolute;top:50%;translate:0 -50%;width:38px;height:38px;border-radius:50%;border:0;
+  background:rgba(60,60,60,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:#fff;font-size:20px;line-height:38px;cursor:pointer;opacity:0;transition:opacity .15s}
+.viewer-nav.prev{left:14px}.viewer-nav.next{right:14px}
+.viewer-stage:hover .viewer-nav,.viewer-nav:focus-visible{opacity:1}
+.viewer-nav[disabled]{visibility:hidden}
+.viewer-bar{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:8px 12px;background:#202020;border-top:1px solid rgba(255,255,255,.06)}
+.viewer-count{font-size:12px;color:#9a9a9a;white-space:nowrap;font-variant-numeric:tabular-nums}
+.viewer-thumbs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:thin;padding:2px}
+.viewer-thumbs button{flex:0 0 auto;width:54px;height:54px;border:2px solid transparent;border-radius:6px;padding:0;overflow:hidden;cursor:pointer;background:#333;opacity:.6;transition:opacity .15s}
+.viewer-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.viewer-thumbs button:hover{opacity:.9}
+.viewer-thumbs button.active{border-color:var(--accent);opacity:1}
+
+/* ── 11. Reproductor tipo QuickTime ────────────────────────────── */
+.window.video{--vw:min(72vw, calc((100vh - var(--menu-h) - 190px) * 16 / 9), 1040px);
+  width:var(--vw);height:auto;min-height:0;min-width:320px;top:calc(var(--menu-h) + 40px);
+  background:#000;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.1)}
+.window.video .window-header{background:#161616;border-bottom:1px solid #000}
+.window.video .window-title{color:#d0d0d0}
+.window.video .window-content{flex:none;aspect-ratio:16/9;overflow:hidden;background:#000}
+.window.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.qt-yt{position:absolute;right:10px;top:50%;translate:0 -50%;z-index:1;font-size:11px;color:#9a9a9a;text-decoration:none;padding:3px 8px;border-radius:5px;white-space:nowrap}
+.qt-yt:hover{background:rgba(255,255,255,.08);color:#fff}
+.qt-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#9a9a9a;font-size:13px;pointer-events:none}
+.qt-fallback svg{opacity:.5}
+
+/* ── 12. Notificación y alerta ─────────────────────────────────── */
+.notif{position:fixed;top:calc(var(--menu-h) + env(safe-area-inset-top,0px) + 10px);right:12px;z-index:4000;
+  width:min(340px,calc(100vw - 24px));display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;
+  background:rgba(40,40,40,.72);color:#fff;border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);
+  box-shadow:0 12px 36px rgba(0,0,0,.35);
+  transform:translateX(calc(100% + 24px));opacity:0;transition:transform .35s cubic-bezier(.2,.9,.3,1.15),opacity .25s}
+.notif.show{transform:none;opacity:1}
+.notif img{width:36px;height:36px;flex:0 0 36px}
+.notif strong{display:block;font-size:13px;margin-bottom:2px}
+.notif span{font-size:12px;color:#d6d6d6;user-select:all;-webkit-user-select:all;word-break:break-all}
+.alert{position:fixed;inset:0;z-index:3000;padding:20px;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.alert[hidden]{display:none}
+.alert-box{width:min(280px,100%);padding:22px 20px 18px;border-radius:14px;text-align:center;color:#fff;
+  background:rgba(40,40,40,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);animation:pop .2s ease}
+.alert-box img{width:52px;margin:0 auto 10px;display:block}
+.alert-box p{margin-bottom:16px;font-size:14px;line-height:1.4}
+.alert-box button{width:100%;padding:7px 16px;border-radius:8px;border:0;background:#007aff;color:#fff;font-size:13px;cursor:pointer}
+.alert-box button:hover{background:#339cff}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── 13. Móvil (≤ 768 px) ──────────────────────────────────────── */
+@media (max-width:768px){
+  .mobile-only{display:flex!important}
+  .desk-only{display:none!important}
+
+  .menubar{gap:12px;padding-left:12px;padding-right:12px}
+  #menus,.menubar .clock .date{display:none}
+
+  .desktop{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));align-content:start;justify-items:center;
+    gap:8px 4px;padding:calc(var(--menu-h) + 20px) 12px 120px;overflow-y:auto;touch-action:pan-y}
+  .icon{position:relative;left:auto!important;top:auto!important;transform:none;width:84px;touch-action:manipulation}
+  .icon img{width:58px;height:58px}
+  .icon img.thumb-photo{width:54px;height:54px}
+  .app-icon{order:-1}
+  .app-icon img{border-radius:0;padding:0;filter:drop-shadow(0 3px 6px rgba(0,0,0,.25))}
+  .sticky-note{position:relative;top:auto!important;left:auto!important;grid-column:1/-1;width:100%;max-width:320px;min-height:0;margin:8px auto;cursor:default}
+  .sticky-note{order:1}
+  .sticky-note.is-hidden{display:none}
+
+  .dock{width:max-content;max-width:calc(100% - 16px);justify-content:center;gap:14px;padding:8px 14px;border-radius:18px}
+  .tooltip{display:none}
+
+  .window,.window.is-max{top:calc(var(--menu-h) + env(safe-area-inset-top,0px))!important;left:0!important;translate:none;
+    width:100%!important;min-width:0;border-radius:0 0 14px 14px;
+    height:calc(100% - var(--menu-h) - env(safe-area-inset-top,0px) - 78px - env(safe-area-inset-bottom,0px))!important}
+  .window.centered{translate:none}
+  .window.preview,.window.video{min-width:0}
+  .window-header{cursor:default;height:40px;flex-basis:40px}
+  .window.notice,.window.notice.is-max{top:30%!important;left:50%!important;translate:-50% 0;width:calc(100% - 40px)!important;max-width:340px;height:auto!important;border-radius:14px}
+  .win-btn{width:14px;height:14px}
+  .window.preview .window-header{height:48px;flex-basis:48px;padding:0 6px 0 12px}
+  .pv-tb{margin-left:6px;gap:2px}
+  .pv-title{margin:0 4px}
+  .tb-fit{display:none}
+  .pv-side{position:absolute;inset:0 auto 0 0;z-index:2;box-shadow:6px 0 20px rgba(0,0,0,.4)}
+  .viewer-nav{opacity:1;width:34px;height:34px;line-height:34px}
+  .viewer-thumbs button{width:46px;height:46px}
+  .window.video .window-content{flex:1;aspect-ratio:auto;display:flex;align-items:center}
+  .window.video iframe{position:relative;inset:auto;height:auto;aspect-ratio:16/9}
+  .qt-yt{display:none}
+
+  .notif{left:50%;right:auto;transform:translate(-50%,-140%)}
+  .notif.show{transform:translate(-50%,0)}
+}
+@media (max-width:380px){ :root{--dock-size:42px} .dock{gap:10px} }
+
+/* ── 14. Accesibilidad: menos movimiento ───────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
